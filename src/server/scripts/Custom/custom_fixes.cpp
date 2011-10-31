@@ -4329,6 +4329,15 @@ public:
                         Talk(SAY_HORSEMAN_FIRES_FAIL);
                         wpCount = FIRE_NODES_PER_AREA+1;
                         me->GetMotionMaster()->MovePoint(wpCount, GetPositionsForArea()[wpCount].GetPositionX(), GetPositionsForArea()[wpCount].GetPositionY(), GetZForArea());
+                        if (!_playerList.empty())
+                        {
+                            for (std::list<uint64>::const_iterator i = _playerList.begin();i != _playerList.end(); ++i)
+                            {
+                                Player* player = me->GetPlayer(*me, *i);
+                                if (player)
+                                    player->FailQuest(player->GetTeam() == ALLIANCE ? QUEST_LET_THE_FIRES_COME_A : QUEST_LET_THE_FIRES_COME_H);
+                            }
+                        }
                         me->DespawnOrUnsummon(10000);
                         break;
                     case EVENT_HORSEMAN_CONFLAGRATION:
