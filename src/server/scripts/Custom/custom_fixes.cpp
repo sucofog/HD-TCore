@@ -4242,9 +4242,9 @@ public:
             events.Reset();
 
             me->Mount(25159);
-            me->SetFlying(true);
             me->SetReactState(REACT_PASSIVE);
-            me->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_OOC_NOT_ATTACKABLE);
+            me->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_OOC_NOT_ATTACKABLE | UNIT_FLAG_DISABLE_MOVE);
+            me->AddUnitMovementFlag(MOVEMENTFLAG_ONTRANSPORT | MOVEMENTFLAG_LEVITATING);
 
             events.ScheduleEvent(EVENT_HORSEMAN_LAUGHS, urand(5000, 10000));
             events.ScheduleEvent(EVENT_HORSEMAN_CONFLAGRATION, urand(7000, 14000));
@@ -4265,7 +4265,7 @@ public:
         void JustDied(Unit* killer)
         {
             if (killer && killer->GetAreaId() == me->GetAreaId())
-                killer->SummonGameObject(GO_LARGE_JACK_O_LANTERN, killer->GetPositionX(), killer->GetPositionY(), killer->GetPositionZ(), killer->GetOrientation()+0.9f, 0.0f, 0.0f, 0.0f, 0.0f, 180000);
+                killer->SummonGameObject(GO_LARGE_JACK_O_LANTERN, me->GetPositionX(), me->GetPositionY(), killer->GetPositionZ()+1.0f, me->GetOrientation(), 0.0f, 0.0f, 0.0f, 0.0f, 180000);
         }
         void MovementInform(uint32 type, uint32 id)
         {
@@ -4292,9 +4292,9 @@ public:
             } else if (id == FIRE_NODES_PER_AREA && firesOut)
             {
                 me->Unmount();
-                me->SetFlying(false);
                 me->SetReactState(REACT_AGGRESSIVE);
-                me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_OOC_NOT_ATTACKABLE);
+                me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_OOC_NOT_ATTACKABLE | UNIT_FLAG_DISABLE_MOVE);
+                me->RemoveUnitMovementFlag(MOVEMENTFLAG_ONTRANSPORT | MOVEMENTFLAG_LEVITATING);
                 events.ScheduleEvent(EVENT_HORSEMAN_CLEAVE, urand(5000, 10000));
             }
         }
