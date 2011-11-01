@@ -4395,6 +4395,7 @@ public:
                 case 87: //GoldShire
                     return FireNodesGoldShire;
                 case 362: // Razor Hill
+                case 2337:
                     return FireNodesRazorHill;
             }
             return NULL;
@@ -4407,7 +4408,8 @@ public:
                 case 87: //GoldShire
                     return 77.6f;
                 case 362: // Razor Hill
-                    return 50.0f;
+                case 2337:
+                    return 40.0f;
             }
             return 0.0f;
         }
